@@ -1,25 +1,23 @@
 <template>
   <div class="home">
     <el-container>
-	  <el-aside width="200px">
-	    <NavMenu></NavMenu>
-	  </el-aside>
-	  <el-container>
-	    <el-header height="60px">
-		  <HomeHeader></HomeHeader>
+      <el-aside width="200px">
+        <NavMenu></NavMenu>
+      </el-aside>
+      <el-container>
+        <el-header height="60px">
+          <HomeHeader></HomeHeader>
 		</el-header>
 		<el-main>
-		  <router-view/>
-		</el-main>
-	  </el-container>
-	</el-container>
+          <router-view/>
+        </el-main>
+      </el-container>
+    </el-container>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import DataPanel from '@/components/DataPanel.vue'
-import DataList from '@/components/DataList.vue'
 import NavMenu from '@/components/NavMenu.vue'
 import HomeHeader from '@/components/HomeHeader.vue'
 
