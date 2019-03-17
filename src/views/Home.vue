@@ -1,11 +1,11 @@
 <template>
   <div class="home">
     <el-container>
-      <el-aside width="200px">
+      <el-aside width="230px">
         <NavMenu></NavMenu>
       </el-aside>
       <el-container>
-        <el-header height="60px">
+        <el-header height="50px">
           <HomeHeader></HomeHeader>
 		</el-header>
 		<el-main>
@@ -47,7 +47,7 @@ export default {
 }
 
 .el-main {
-  margin: 20px 20px;
+  margin: 15px 15px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .22);
 }
 </style>
