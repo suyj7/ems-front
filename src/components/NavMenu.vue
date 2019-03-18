@@ -1,7 +1,7 @@
 <template>
 	<el-menu 
 		style="height: 100%" 
-		background-color="#545c64"
+		background-color="#3C3C3C"
 		text-color="#fff"
 		default-active="1"
 		>
@@ -45,9 +45,11 @@
 .header {
 	height: 50px;
 	line-height: 50px;
-	background-color: lightseagreen;
+	background-color: #5ea279;
 	font-family: SimHei;
 	font-size: 1.2rem;
 	font-weight: bold;
+	text-align: center;
+	color: white;
 }
 </style>

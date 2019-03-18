@@ -37,17 +37,21 @@ export default {
 
 .el-container {
   height: 100%;
+  background-color: rgba(0,0,0,0.02);
 }
 
 .el-aside {
+
 }
 
 .el-header {
   box-shadow: 0 2px 4px rgba(0, 0, 0, .12);
+  background-color: white;
 }
 
 .el-main {
   margin: 15px 15px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, .22);
+  background-color: white;
+  border-radius: 2px;
 }
 </style>

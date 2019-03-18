@@ -41,7 +41,6 @@ export default {
 	},
 	methods: {
 		onSubmit: function () {
-			console.log(this.$store.state)
 			this.$refs['form'].validate(valid => {
 				if (valid) {
 					axios.post('http://localhost:8080/EMS_TP5/public/index.php/api/Index/login', {
@@ -52,7 +51,7 @@ export default {
 						if (response.data.status === 0) {
 							this.$message.error(response.data.message);
 						} else if (response.data.status === 1) {
-							this.$store.commit('login');
+							sessionStorage.setItem('authorized', this.form.username);
 							this.$router.push('/home');
 						} else {
 							console.log(response.data.message);

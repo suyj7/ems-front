@@ -1,7 +1,8 @@
 <template>
 	<el-row type="flex" justify="end">
 		<el-col :span="2">
-		<span @click="logout">登出</span>
+		<a href="">{{username}}, </a>
+		<a href="" @click="logout">登出</a>
 		</el-col>
 	</el-row>
 </template>
@@ -11,9 +12,14 @@ import axios from 'axios';
 
 export default {
 	name: 'HomeHeader',
+	data () {
+		return {
+			username: sessionStorage.getItem('authorized')
+		}
+	},
 	methods: {
 		logout: function () {
-			this.$store.commit('logout');
+			sessionStorage.removeItem('authorized');
 			this.$router.push('/');
 			axios.get('http://localhost:8080/EMS_TP5/public/index.php/api/Index/logout')
 			.then(response => {
@@ -31,9 +37,5 @@ export default {
 .el-row, .el-col {
 	height: 60px;
 	line-height: 60px;
-}
-
-.el-col {
-	text-decoration: underline;
 }
 </style>

@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import store from './store.js'
 import Home from './views/Home.vue'
 import Login from './views/Login.vue'
 
@@ -74,9 +73,7 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
 	if (to.meta.requiresAuth) {
-		//BUG beforeEach先于beforCreate执行
-		console.log(store.state)
-		if (!store.state.authorized) {
+		if (!sessionStorage.getItem('authorized')) {
 			next('/');
 		}
 	}
