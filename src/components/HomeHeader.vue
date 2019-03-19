@@ -20,7 +20,7 @@ export default {
 	methods: {
 		logout: function () {
 			sessionStorage.removeItem('authorized');
-			this.$router.push('/');
+			this.$cookies.remove('PHPSESSID');
 			axios.get('http://localhost:8080/EMS_TP5/public/index.php/api/Index/logout')
 			.then(response => {
 				console.log(response.data);

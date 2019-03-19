@@ -3,13 +3,24 @@
 		ref="form" 
 		:model="form" 
 		:rules="rules" 
-		label-width="80px" style="width: 300px; margin: 100px auto"
+		label-width="80px" 
+		style="width: 300px; margin: 100px auto"
 		@submit.native.prevent>
 		<el-form-item label="用户名" prop="username">
 			<el-input v-model="form.username" maxlength="100"></el-input>
 		</el-form-item>
 		<el-form-item label="密码" prop="password">
 			<el-input v-model="form.password" show-password></el-input>
+		</el-form-item>
+		<el-form-item label="验证码" prop="captcha">
+			<el-row type="flex" justify="space-between">
+				<el-col :span="9">
+					<el-input v-model="form.captcha"></el-input>
+				</el-col>
+				<el-col :span="14">
+					<div><img :src="captcha_src" width="130px" height="40px" /></div>				
+				</el-col>
+			</el-row>
 		</el-form-item>
 		<el-form-item>
 			<el-button type="primary" native-type="submit" @click="onSubmit" style="width: 100%">登录</el-button>
@@ -20,6 +31,7 @@
 <script>
 import axios from 'axios'
 
+axios.defaults.withCredentials = true;
 
 export default {
 	name: 'login',
@@ -27,7 +39,8 @@ export default {
 		return {
 			form: {
 				username: '',
-				password: ''
+				password: '',
+				captcha: ''
 			},
 			rules: {
 				username: [
@@ -35,8 +48,12 @@ export default {
 				],
 				password: [
 					{required: true, message: '请输入密码', trigger: 'blur'}
+				],
+				captcha: [
+					{required: true, message: '请输入验证码', trigger: 'blur'}
 				]
-			}
+			},
+			captcha_src: ''
 		}
 	},
 	methods: {
@@ -45,15 +62,32 @@ export default {
 				if (valid) {
 					axios.post('http://localhost:8080/EMS_TP5/public/index.php/api/Index/login', {
 						username: this.form.username,
-						password: this.form.password
+						password: this.form.password,
+						captcha: this.form.captcha
 					})
 					.then(response => {
 						if (response.data.status === 0) {
+							//登录失败
 							this.$message.error(response.data.message);
+							
+							//请求captcha
+							this.$cookies.remove('PHPSESSID');
+							axios.get("http://localhost:8080/EMS_TP5/public/index.php/api/Index/getCaptcha")
+							.then(response => {
+								this.captcha_src = "http://localhost:8080" + response.data;
+								console.log(this.captcha_src)
+							})
+							.catch(error => {
+								console.log(error);
+							});
+							
 						} else if (response.data.status === 1) {
+							//登录成功
 							sessionStorage.setItem('authorized', this.form.username);
 							this.$router.push('/home');
+							
 						} else {
+							//登录异常
 							console.log(response.data.message);
 						}
 					})
@@ -63,7 +97,19 @@ export default {
 				}
 			});
 		}
-	}  
+	},
+	created () {
+		//请求captcha
+		this.$cookies.remove('PHPSESSID');
+		axios.get("http://localhost:8080/EMS_TP5/public/index.php/api/Index/getCaptcha")
+		.then(response => {
+			this.captcha_src = "http://localhost:8080" + response.data;
+			console.log(this.captcha_src)
+		})
+		.catch(error => {
+			console.log(error);
+		});
+	}
 }
 </script>
 
