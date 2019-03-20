@@ -1,8 +1,8 @@
 <template>
 	<el-menu 
 		style="height: 100%" 
-		background-color="#3C3C3C"
-		text-color="#fff"
+		background-color="#263238"
+		text-color="#C5CBCF"
 		default-active="1"
 		>
 		<div class="header">
@@ -42,14 +42,18 @@
 </script>
 
 <style scoped>
-.header {
-	height: 50px;
-	line-height: 50px;
-	background-color: #5ea279;
-	font-family: SimHei;
-	font-size: 1.2rem;
-	font-weight: bold;
-	text-align: center;
-	color: white;
-}
+	.header {
+		height: 50px;
+		line-height: 50px;
+		background-color: rgb(23, 179, 163);
+		font-family: SimHei;
+		font-size: 1.2rem;
+		font-weight: bold;
+		text-align: center;
+		color: white;
+	}
+	
+	.el-menu-item {
+		font-family: Microsoft Yahei;
+	}
 </style>
