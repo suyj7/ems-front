@@ -8,7 +8,7 @@
 			title="提示"
 			:visible.sync="dialogVisible"
 			width="30%">
-			<span>确定进行[登出]操作？</span>
+			<span>确定进行[ 登出 ]操作？</span>
 			<span slot="footer" class="dialog-footer">
 				<el-button @click="dialogVisible = false">取消</el-button>
 				<el-button type="danger" @click="logout">确定</el-button>

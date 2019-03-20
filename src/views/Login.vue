@@ -7,10 +7,18 @@
 		style="width: 300px; margin: 100px auto"
 		@submit.native.prevent>
 		<el-form-item label="用户名" prop="username">
-			<el-input ref="name" v-model="form.username" maxlength="100"></el-input>
+			<el-input 
+				ref="name" 
+				v-model="form.username" 
+				maxlength="100"
+				clearable>
+			</el-input>
 		</el-form-item>
 		<el-form-item label="密码" prop="password">
-			<el-input v-model="form.password" show-password></el-input>
+			<el-input 
+				v-model="form.password" 
+				show-password>
+			</el-input>
 		</el-form-item>
 		<el-form-item label="验证码" prop="captcha">
 			<el-row type="flex" justify="space-between">
@@ -18,7 +26,9 @@
 					<el-input v-model="form.captcha"></el-input>
 				</el-col>
 				<el-col :span="14">
-					<div @click="changeCaptcha" style="cursor: pointer"><img :src="captcha_src" width="130px" height="40px" /></div>				
+					<div @click="changeCaptcha" style="cursor: pointer">
+						<img :src="captcha_src" width="130px" height="40px" />
+					</div>				
 				</el-col>
 			</el-row>
 		</el-form-item>
