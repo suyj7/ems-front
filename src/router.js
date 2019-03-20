@@ -11,10 +11,7 @@ const router = new Router({
 	routes: [
 		{
 			path: '/',
-			component: Login,
-			meta: {
-				requiresAuth: false
-			}
+			redirect: '/login'
 		},
 		{
 			path: '/login',
