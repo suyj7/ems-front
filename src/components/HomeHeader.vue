@@ -1,10 +1,8 @@
 <template>
-	<el-row type="flex" justify="end">
-		<el-col :span="2">
+	<div id="headerBar">
 		<a href="">{{username}}, </a>
 		<a href="" @click="logout">登出</a>
-		</el-col>
-	</el-row>
+	</div>
 </template>
 
 <script>
@@ -34,8 +32,11 @@ export default {
 </script>
 
 <style scoped>
-.el-row, .el-col {
-	height: 60px;
-	line-height: 60px;
-}
+	#headerBar {
+		width: 100px;
+		height: 50px;
+		line-height: 50px;
+		float: right;
+		text-align: end;
+	}
 </style>

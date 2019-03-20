@@ -18,7 +18,7 @@
 					<el-input v-model="form.captcha"></el-input>
 				</el-col>
 				<el-col :span="14">
-					<div @click="changeCaptcha"><img :src="captcha_src" width="130px" height="40px" /></div>				
+					<div @click="changeCaptcha" style="cursor: pointer"><img :src="captcha_src" width="130px" height="40px" /></div>				
 				</el-col>
 			</el-row>
 		</el-form-item>
