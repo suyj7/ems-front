@@ -29,7 +29,7 @@ const router = new Router({
 			},
 			children: [{
 				path: '',
-				component: () => import('./components/DataPanel.vue'),
+				component: () => import('./components/echarts.vue'),
 				meta: {
 					requiresAuth: true
 				}
