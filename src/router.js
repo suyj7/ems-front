@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import store from './store';
 import Router from 'vue-router'
 import Home from './views/Home.vue'
 import Login from './views/Login.vue'
@@ -69,12 +70,17 @@ const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
+	store.commit('showLoading');
 	if (to.meta.requiresAuth) {
 		if (!sessionStorage.getItem('authorized')) {
 			next('/');
 		}
 	}
 	next();
+});
+
+router.afterEach((to, from) => {
+	store.commit('hideLoading');
 });
 
 export default router;
