@@ -40,8 +40,8 @@ const router = new Router({
 					requiresAuth: true
 				}
 				},{
-				path: 'datapanel',
-				component: () => import('./components/DataPanel.vue'),
+				path: 'city/:name',
+				component: () => import('./components/City.vue'),
 				meta: {
 					requiresAuth: true
 				}		

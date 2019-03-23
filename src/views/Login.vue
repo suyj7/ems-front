@@ -1,7 +1,7 @@
 <template>
-	<div id="login-background" :style="{backgroundImage: 'url(' + require('../assets/bg.jpg') + ')'}">
-		<div id="login-form-container">
-			<div id="login-form-wrapper">
+	<div id="login_background" :style="{backgroundImage: 'url(' + require('../assets/bg.jpg') + ')'}">
+		<div id="login_form_container">
+			<div id="login_form_wrapper">
 				<el-form 
 					ref="form" 
 					:model="form" 
@@ -28,7 +28,7 @@
 								<el-input v-model="form.captcha"></el-input>
 							</el-col>
 							<el-col :span="14">
-								<div @click="changeCaptcha" style="cursor: pointer; float: right;">
+								<div id="captcha_wrapper" @click="changeCaptcha" style="cursor: pointer; float: right;" v-loading="loading">
 									<img :src="captcha_src" width="130px" height="40px" />
 								</div>				
 							</el-col>
@@ -68,7 +68,8 @@ export default {
 					{required: true, message: '请输入验证码', trigger: 'blur'}
 				]
 			},
-			captcha_src: ''
+			captcha_src: '',
+			loading: true
 		}
 	},
 	methods: {
@@ -114,12 +115,13 @@ export default {
 	},
 	created () {
 		
-		//请求captcha
+		//请求图像验证码
 		this.$cookies.remove('PHPSESSID');
+		this.loading = true;
 		axios.get("http://localhost:8080/EMS_TP5/public/index.php/api/Index/getCaptcha")
 		.then(response => {
 			this.captcha_src = "http://localhost:8080" + response.data;
-			console.log(this.captcha_src)
+			this.loading = false;
 		})
 		.catch(error => {
 			console.log(error);
@@ -130,7 +132,7 @@ export default {
 </script>
 
 <style scoped>
-	#login-background {
+	#login_background {
 		width: 100%;
 		height: 100%;
 		position: relative;
@@ -139,7 +141,7 @@ export default {
 		z-index: 1;
 	}
 	
-	#login-background:after{
+	#login_background:after{
 		content: "";
 		width:100%;
 		height:100%;
@@ -147,7 +149,7 @@ export default {
 		left:0;
 		top:0;
 		background: inherit;
-		filter: blur(2px);
+		filter: blur(1px);
 		z-index: -2;
 	}
 	
@@ -155,17 +157,22 @@ export default {
 		z-index: 10;
 	}
 	
-	#login-form-container {
-		width: 330px;
+	#login_form_container {
+		width: 385px;
 		padding-top: 100px; 
 		margin: 0 auto;
 	}
 	
-	#login-form-wrapper {
+	#login_form_wrapper {
 		width: 310px;
 		padding: 50px 0px;
 		padding-right: 75px;
 		border-radius: 6px;
-		background-color: rgba(255,255,255,0.15);
+		background-color: rgba(255,255,255,0.5);
+	}
+	
+	#captcha_wrapper {
+		height: 40px;
+		width: 130px;
 	}
 </style>

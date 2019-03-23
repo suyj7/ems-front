@@ -8,7 +8,7 @@
         <el-header height="50px">
           <HomeHeader></HomeHeader>
 		</el-header>
-		<el-main>
+		<el-main style="padding: 5px;">
           <router-view/>
         </el-main>
       </el-container>

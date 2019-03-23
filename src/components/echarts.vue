@@ -5,8 +5,7 @@
 </template>
 
 <script>
-	import echarts from 'echarts';
-	require('../../node_modules/echarts/extension/bmap/bmap.js');
+require('../../node_modules/echarts/extension/bmap/bmap.js');
 	
 	
 var data = [
@@ -199,7 +198,7 @@ var data = [
     {name: '菏泽', value: 194},
     {name: '合肥', value: 229},
     {name: '武汉', value: 273},
-    {name: '大庆', value: {pm: 2, co: 5}}
+    {name: '大庆', value: 279}
 ];
 
 var geoCoordMap = {
@@ -409,50 +408,21 @@ var convertData = function (data) {
     return res;
 };
 
-function renderItem(params, api) {
-    var coords = [
-        [116.7,39.53],
-        [103.73,36.03],
-        [112.91,27.87],
-        [120.65,28.01],
-        [119.57,39.95]
-    ];
-    var points = [];
-    for (var i = 0; i < coords.length; i++) {
-        points.push(api.coord(coords[i]));
-    }
-    var color = api.visual('color');
-
-    return {
-        type: 'polygon',
-        shape: {
-            points: echarts.graphic.clipPointsByRect(points, {
-                x: params.coordSys.x,
-                y: params.coordSys.y,
-                width: params.coordSys.width,
-                height: params.coordSys.height
-            })
-        },
-        style: api.style({
-            fill: color,
-            stroke: echarts.color.lift(color)
-        })
-    };
-}
 
 var option = {
     // backgroundColor: '#404a59',
     title: {
-        text: '全国主要城市空气质量',
-        subtext: 'data from PM25.in',
-        sublink: 'http://www.pm25.in',
+        text: '基于云服务的环境检测系统',
+        subtext: '中国环境监测总站',
+        sublink: 'http://www.cnemc.cn/',
         left: 'center',
         textStyle: {
             color: '#fff'
         }
     },
     tooltip : {
-        trigger: 'item'
+        trigger: 'item',
+		formatter: "{b}"
     },
     bmap: {
         center: [104.114129, 37.550339],
@@ -597,9 +567,7 @@ var option = {
             type: 'scatter',
             coordinateSystem: 'bmap',
             data: convertData(data),
-            symbolSize: function (val) {
-                return val[2] / 10;
-            },
+            symbolSize: 1,
             label: {
                 normal: {
                     formatter: '{b}',
@@ -617,25 +585,23 @@ var option = {
             }
         },
         {
-            name: 'Top 5',
+            name: '城市',
             type: 'effectScatter',
             coordinateSystem: 'bmap',
             data: convertData(data.sort(function (a, b) {
                 return b.value - a.value;
-            }).slice(0, 6)),
-            symbolSize: function (val) {
-                return val[2] / 10;
-            },
+            })),
+            symbolSize: 10,
             showEffectOn: 'emphasis',
             rippleEffect: {
-                brushType: 'stroke'
+                brushType: 'fill'
             },
             hoverAnimation: true,
             label: {
                 normal: {
-                    formatter: '{b}',
+                    formatter: '{a}:{b}:{c}',
                     position: 'right',
-                    show: true
+                    show: false
                 }
             },
             itemStyle: {
@@ -646,28 +612,18 @@ var option = {
                 }
             },
             zlevel: 1
-        },
-        {
-            type: 'custom',
-            coordinateSystem: 'bmap',
-            renderItem: renderItem,
-            itemStyle: {
-                normal: {
-                    opacity: 0.5
-                }
-            },
-            animation: false,
-            silent: true,
-            data: [0],
-            z: -10
         }
     ]
 };
 	
+	
 	export default {
 		mounted () {
-			var myChart = echarts.init(document.getElementById('main'));			
+			var myChart = this.$echarts.init(document.getElementById('main'));			
 			myChart.setOption(option);
+			myChart.on('click', (params) => {
+				this.$router.push('/home/city/' + params.data.name);
+			});
 		}
 	}
 </script>

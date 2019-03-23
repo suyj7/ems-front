@@ -35,7 +35,7 @@
 				this.$router.push('/home/datalist');
 			},
 			toDataPanel: function() {
-				this.$router.push('/home/datapanel');
+				this.$router.push('/home');
 			}
 		}
 	}
