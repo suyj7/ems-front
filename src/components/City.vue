@@ -11,13 +11,26 @@
 			}
 		},
 		mounted () {
+			//查看历史数据
+			function checkHistory () {
+				this.$router.push('/home/history');
+			}
+			var checkHistoryInChart = checkHistory.bind(this);
+			
 			var chart = this.$echarts.init(document.getElementById('chart'));
 			var option = {
 				backgroundColor:'#fff',
 				"toolbox": {
+					padding: [5, 20, 5, 5],
 					"feature": {
 						"saveAsImage": {
 							"type": "svg"
+						},
+						"myFeature": {
+							show: true,
+							title: "历史数据",
+							icon: "image://" + require('../assets/历史数据.png'),
+							onclick: checkHistoryInChart
 						}
 					}
 				},
@@ -88,7 +101,7 @@
 					"y2": 0
 				}],
 				"yAxis": {
-					"data": ["PM2.5", "一氧化碳", "二氧化硫", "二氧化氮", "臭氧", "PM10", "", ""],
+					"data": ["温度", "湿度", "甲醛", "光照", "PM2.5", "PM10"],
 					"splitLine": {
 						"show": false
 					},
@@ -114,13 +127,13 @@
 				"series": [{
 					"type": "bar",
 					"name": "目标值",
-					"data": [100, 100, 100, 100, 100],
+					"data": [100, 100, 100, 100, 100, 100],
 					"barWidth": 30,
 					"z": 9
 				}, {
 					"type": "custom",
 					"name": "实际值",
-					"data": [88, 83, 94, 76, 62],
+					"data": [88, 83, 94, 76, 62, 45],
 					"z": 10,
 					renderItem: (_, api) => {
 						const [x, y] = api.coord([api.value(0), api.value(1)]);
@@ -148,7 +161,7 @@
 					"stack": "指标范围",
 					"silent": true,
 					"name": "低于较差区间",
-					"data": [30, 35, 40, 35, 35],
+					"data": [30, 35, 40, 35, 35, 20],
 					"itemStyle": {
 						"color": "#d3d3d3"
 					},
@@ -166,7 +179,7 @@
 					"stack": "指标范围",
 					"silent": true,
 					"name": "较差区间",
-					"data": [20, 20, 15, 15, 13],
+					"data": [20, 20, 15, 15, 13, 20],
 					"itemStyle": {
 						"color": "#FFA39E"
 					},
@@ -184,7 +197,7 @@
 					"stack": "指标范围",
 					"silent": true,
 					"name": "中间区间",
-					"data": [20, 20, 15, 22, 13],
+					"data": [20, 20, 15, 22, 13, 20],
 					"itemStyle": {
 						"color": "#FFD591"
 					},
@@ -202,7 +215,7 @@
 					"stack": "指标范围",
 					"silent": true,
 					"name": "良好区间",
-					"data": [20, 20, 20, 18, 13],
+					"data": [20, 20, 20, 18, 13, 20],
 					"itemStyle": {
 						"color": "#91D5FF"
 					},
@@ -220,7 +233,7 @@
 					"stack": "指标范围",
 					"silent": true,
 					"name": "优秀区间",
-					"data": [10, 5, 10, 10, 26],
+					"data": [10, 5, 10, 10, 26, 20],
 					"itemStyle": {
 						"color": "#A7E8B4"
 					},

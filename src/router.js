@@ -29,24 +29,30 @@ const router = new Router({
 				requiresAuth: true
 			},
 			children: [{
-				path: '',
-				component: () => import('./components/echarts.vue'),
-				meta: {
-					requiresAuth: true
-				}
+					path: '',
+					component: () => import('./components/echarts.vue'),
+					meta: {
+						requiresAuth: true
+					}
 				},{
-				path: 'datalist',
-				component: () => import('./components/DataList.vue'),
-				meta: {
-					requiresAuth: true
-				}
+					path: 'datalist',
+					component: () => import('./components/DataList.vue'),
+					meta: {
+						requiresAuth: true
+					}
 				},{
-				path: 'city/:name',
-				component: () => import('./components/City.vue'),
-				meta: {
-					requiresAuth: true
-				}		
-			}]
+					path: 'city/:name',
+					component: () => import('./components/City.vue'),
+					meta: {
+						requiresAuth: true
+					}		
+				}, {
+					path: 'history',
+					component: () => import('./components/History'),
+					meta: {
+						requiresAuth: true
+					}
+				}]
 		},
 		{
 			path: '/about',
@@ -79,7 +85,7 @@ router.beforeEach((to, from, next) => {
 	next();
 });
 
-router.afterEach((to, from) => {
+router.afterEach(() => {
 	store.commit('hideLoading');
 });
 
