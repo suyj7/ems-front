@@ -1,17 +1,14 @@
 <template>
-	<div id="history_analysis">
+	<div id="history_analysis" ref="history_analysis">
 	</div>
 </template>
 
 <script>
-	
+	var chart;
 	export default {
-		created () {
-			
-		},
 		mounted () {
 			
-			var chart = this.$echarts.init(document.getElementById('history_analysis'));
+			chart = this.$echarts.init(document.getElementById('history_analysis'));
 			//图表基本信息定义
 			//var overviewChartID = 'overview-chart';
 			//var overviewTitle = 'XXX 环境检测历史分析';
@@ -208,6 +205,13 @@
 				]
 			};
 			chart.setOption(option);
+			document.querySelector('#menu_toggle_icon').onclick = () => chart.resize();
+			document.querySelector('body').onresize = () => chart.resize();
+		},
+		methods: {
+			resize: function () {
+				chart.resize();
+			}
 		}
 	}
 </script>

@@ -624,6 +624,8 @@ var option = {
 			myChart.on('click', (params) => {
 				this.$router.push('/home/city/' + params.data.name);
 			});
+			document.querySelector('#menu_toggle_icon').onclick = () => myChart.resize();
+			document.querySelector('body').onresize = () => myChart.resize();
 		}
 	}
 </script>

@@ -9,6 +9,7 @@
 					text-color="#C5CBCF"
 					default-active="1"
 					:collapse="isCollapse"
+					:collapse-transition="false"
 				>
 					<div class="menu-header">基于云服务的环境检测系统</div>
 					<el-menu-item @click="toDataPanel" index="1">
@@ -31,7 +32,7 @@
 			</el-aside>
 			<el-container>
 				<el-header height="50px">
-					<i class="el-icon-menu" @click="toggleCollapse"></i>
+					<i id="menu_toggle_icon" class="el-icon-menu" @click="toggleCollapse"></i>
 					<div id="headerBar">
 						<span>{{username}}, </span>
 						<span @click="logoutComfirm" style="cursor: pointer; text-decoration: underline">登出</span>
@@ -75,9 +76,18 @@ export default {
 		toDataPanel: function() {
 			this.$router.push('/home');
 		},
+		changeMenuTitle: function () {
+			if (this.isCollapse) {
+				document.querySelector('.menu-header').innerHTML = '云服务';
+			} else {
+				document.querySelector('.menu-header').innerHTML = '基于云服务的环境检测系统';
+			}
+		},
 		toggleCollapse: function () {
+			//导航栏折叠切换
 			this.isCollapse = !this.isCollapse;
-			document.querySelector('.menu-header').innerHTML = '';
+			
+			setTimeout(this.changeMenuTitle, 0);
 		},
 		logoutComfirm: function () {
 			this.dialogVisible = true;
@@ -145,7 +155,6 @@ export default {
 			
 			.el-menu-vertical:not(.el-menu--collapse) {
 				width: 250px;
-				min-height: 400px;
 			}
 		}
 	}

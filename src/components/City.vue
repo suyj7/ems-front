@@ -247,6 +247,8 @@
 				}]
 			}
 			chart.setOption(option);
+			document.querySelector('#menu_toggle_icon').onclick = () => chart.resize();
+			document.querySelector('body').onresize = () => chart.resize();
 		}
 	}
 </script>
