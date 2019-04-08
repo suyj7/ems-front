@@ -14,15 +14,15 @@
 					<div class="menu-header">基于云服务的环境检测系统</div>
 					<el-menu-item @click="toDataPanel" index="1">
 						<i class="el-icon-location"></i>
-						<span slot="title">实时监控</span>
+						<span slot="title">设备分布</span>
 					</el-menu-item>
 					<el-menu-item @click="toDataList" index="2">
 						<i class="el-icon-document"></i>
-						<span slot="title">设备列表</span>
+						<span slot="title">实时数据</span>
 					</el-menu-item>
 					<el-menu-item index="3">
 						<i class="el-icon-download"></i>
-						<span slot="title">数据导出</span>
+						<span slot="title">历史数据</span>
 					</el-menu-item>
 					<el-menu-item index="4">
 						<i class="el-icon-setting"></i>
