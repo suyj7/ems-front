@@ -32,10 +32,10 @@
 			</el-aside>
 			<el-container>
 				<el-header height="50px">
-					<i id="menu_toggle_icon" class="el-icon-menu" @click="toggleCollapse"></i>
+					<i id="menu_toggle_icon" class="el-icon-menu" @click="toggleCollapse" style="cursor: pointer;" title="导航栏切换"></i>
 					<div id="headerBar">
 						<span>{{username}}, </span>
-						<span @click="logoutComfirm" style="cursor: pointer; text-decoration: underline">登出</span>
+						<Logout />
 					</div>
 				</el-header>
 				<el-main style="padding: 5px;">
@@ -43,22 +43,12 @@
 				</el-main>
 			</el-container>
 		</el-container>
-		<el-dialog
-			title="提示"
-			:visible.sync="dialogVisible"
-			width="30%">
-			<span>确定进行[ 登出 ]操作？</span>
-			<span slot="footer" class="dialog-footer">
-				<el-button @click="dialogVisible = false">取消</el-button>
-				<el-button type="danger" @click="logout">确定</el-button>
-			</span>
-		</el-dialog>
 	</div>
 </template>
 
 <script>
 // @ is an alias to /src
-import axios from 'axios';
+import Logout from '@/components/Logout.vue';
 
 export default {
 	name: 'home',
@@ -88,23 +78,10 @@ export default {
 			this.isCollapse = !this.isCollapse;
 			
 			setTimeout(this.changeMenuTitle, 0);
-		},
-		logoutComfirm: function () {
-			this.dialogVisible = true;
-		},
-		logout: function () {
-			this.dialogVisible = false
-			sessionStorage.removeItem('authorized');
-			this.$cookies.remove('PHPSESSID');
-			this.$router.push('/login');
-			axios.get('http://localhost:8080/EMS_TP5/public/index.php/api/Index/logout')
-			.then(response => {
-				console.log(response.data);
-			})
-			.catch(error => {
-				console.log(error);
-			})
 		}
+	},
+	components: {
+		Logout
 	}
 }
 </script>
@@ -128,7 +105,6 @@ export default {
 				
 				#headerBar {
 					float: right;
-					text-align: end;
 				}
 			}
 			

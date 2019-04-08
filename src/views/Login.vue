@@ -141,6 +141,7 @@ export default {
 		z-index: 1;
 	}
 	
+	/*背景模糊层*/
 	#login_background:after{
 		content: "";
 		width:100%;
@@ -149,7 +150,7 @@ export default {
 		left:0;
 		top:0;
 		background: inherit;
-		filter: blur(1px);
+		filter: blur(0px);
 		z-index: -2;
 	}
 	
@@ -175,5 +176,4 @@ export default {
 		height: 40px;
 		width: 130px;
 	}
-	
 </style>

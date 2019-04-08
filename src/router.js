@@ -30,7 +30,7 @@ const router = new Router({
 			},
 			children: [{
 					path: '',
-					component: () => import('./components/echarts.vue'),
+					component: () => import('./components/Device.vue'),
 					meta: {
 						requiresAuth: true
 					}
@@ -42,29 +42,29 @@ const router = new Router({
 					}
 				},{
 					path: 'city/:name',
-					component: () => import('./components/City.vue'),
+					component: () => import('./components/Realtime.vue'),
 					meta: {
 						requiresAuth: true
 					}		
 				}, {
 					path: 'history',
-					component: () => import('./components/History'),
+					component: () => import('./components/History.vue'),
 					meta: {
 						requiresAuth: true
 					}
 				}]
 		},
-		{
-			path: '/about',
-			name: 'about',
+		//{
+			//path: '/about',
+			//name: 'about',
 			// route level code-splitting
 			// this generates a separate chunk (about.[hash].js) for this route
 			// which is lazy-loaded when the route is visited.
-			component: () => import(/* webpackChunkName: "about" */ './views/About.vue'),
-			meta: {
-				requiresAuth: false
-			}
-		},
+			//component: () => import(/* webpackChunkName: "about" */ './views/About.vue'),
+			//meta: {
+			//	requiresAuth: false
+			//}
+		//},
 		{
 			path: '*',
 			redirect: '/',
