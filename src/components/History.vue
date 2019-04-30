@@ -4,9 +4,18 @@
 </template>
 
 <script>
+	import axios from 'axios';
+	
 	var chart;
 	export default {
 		mounted () {
+			axios.post("http://localhost:8080/EMS_TP5/public/index.php/api/Index/getHistoryData", {
+				deviceNumber: this.$route.query.deviceNumber
+			}).then(response => {
+				console.log(response.data);
+			}).catch(error => {
+				console.log(error);
+			});
 			
 			chart = this.$echarts.init(document.getElementById('history_analysis'));
 			//图表基本信息定义
@@ -108,7 +117,7 @@
 				//标题组件，包含主标题和副标题
 				title: {
 					x: 'center',
-					text: "环境检测历史数据",
+					text: this.$route.params.address+"环境检测历史数据",
 					subtext: this.$echarts.format.formatTime("yyyy年MM月dd", new Date()),
 					padding: [1, 0, 0, 0],
 					

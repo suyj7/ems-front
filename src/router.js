@@ -13,44 +13,84 @@ const router = new Router({
 		{
 			path: '/',
 			redirect: '/login'
-		},
-		{
+		},{
+			path: '/404',
+			component: () => import('./views/404.vue'),
+			meta: {
+				requiresAuth: false
+			}
+		},{
+			path: '/error/:msg',
+			component: () => import('./views/Error.vue'),
+		},{
 			path: '/login',
 			name: 'login',
 			component: Login,
 			meta: {
 				requiresAuth: false
 			}
-		},
-		{
+		},{
 			path: '/home',
 			component: Home,
 			meta: {
-				requiresAuth: true
+				requiresAuth: true,
+				authorization: 'user'
 			},
 			children: [{
 					path: '',
 					component: () => import('./components/Device.vue'),
 					meta: {
-						requiresAuth: true
+						requiresAuth: true,
+						authorization: 'user'
 					}
 				},{
-					path: 'datalist',
-					component: () => import('./components/DataList.vue'),
-					meta: {
-						requiresAuth: true
-					}
-				},{
-					path: 'city/:name',
+					path: 'realtime/:address',
 					component: () => import('./components/Realtime.vue'),
 					meta: {
-						requiresAuth: true
+						requiresAuth: true,
+						authorization: 'user'
 					}		
 				}, {
-					path: 'history',
+					path: 'history/:address',
 					component: () => import('./components/History.vue'),
 					meta: {
-						requiresAuth: true
+						requiresAuth: true,
+						authorization: 'user'
+					}
+				}, {
+					path: 'deviceManage',
+					component: () => import('./components/DeviceManage.vue'),
+					meta: {
+						requiresAuth: true,
+						authorization: 'admin'
+					}
+				}, {
+					path: 'userManage',
+					component: () => import('./components/UserManage.vue'),
+					meta: {
+						requiresAuth: true,
+						authorization: 'admin'
+					}
+				}, {
+					path: 'addDevice',
+					component: () => import('./components/AddDevice.vue'),
+					meta: {
+						requiresAuth: true,
+						authorization: 'admin'
+					}
+				}, {
+					path: 'addUser',
+					component: () => import('./components/AddUser.vue'),
+					meta: {
+						requiresAuth: true,
+						authorization: 'admin'
+					}
+				}, {
+					path: 'addMonitorData',
+					component: () => import('./components/AddMonitorData.vue'),
+					meta: {
+						requiresAuth: true,
+						authorization: 'admin'
 					}
 				}]
 		},
@@ -67,7 +107,7 @@ const router = new Router({
 		//},
 		{
 			path: '*',
-			redirect: '/',
+			redirect: '/404',
 			meta: {
 				requiresAuth: false
 			}
@@ -79,7 +119,12 @@ router.beforeEach((to, from, next) => {
 	store.commit('showLoading');
 	if (to.meta.requiresAuth) {
 		if (!sessionStorage.getItem('authorized')) {
-			next('/');
+			next('/error/用户尚未登录');
+		}
+		if (to.meta.authorization === 'admin') {
+			if(sessionStorage.getItem('authorization') !== 'admin') {
+				next('/error/用户权限错误');
+			}
 		}
 	}
 	next();

@@ -16,17 +16,29 @@
 						<i class="el-icon-location"></i>
 						<span slot="title">设备分布</span>
 					</el-menu-item>
-					<el-menu-item @click="toDataList" index="2">
+					<el-menu-item @click="toLatestData" index="2">
 						<i class="el-icon-document"></i>
-						<span slot="title">实时数据</span>
+						<span slot="title">最新数据</span>
 					</el-menu-item>
 					<el-menu-item index="3">
 						<i class="el-icon-download"></i>
 						<span slot="title">历史数据</span>
 					</el-menu-item>
-					<el-menu-item index="4">
+					<el-menu-item index="4" v-if="this.authorization == 'user'">
 						<i class="el-icon-setting"></i>
 						<span slot="title">用户中心</span>
+					</el-menu-item>
+					<el-menu-item v-if="this.authorization == 'admin'" @click="toUserManage">
+						<i class="el-icon-setting"></i>
+						<span slot="title">用户管理</span>
+					</el-menu-item>
+					<el-menu-item v-if="this.authorization == 'admin'" @click="toDeviceManage">
+						<i class="el-icon-setting"></i>
+						<span slot="title">设备管理</span>
+					</el-menu-item>
+					<el-menu-item v-if="this.authorization == 'admin'" @click="toAddMonitorData">
+						<i class="el-icon-setting"></i>
+						<span slot="title">模拟数据提交</span>
 					</el-menu-item>
 				</el-menu>
 			</el-aside>
@@ -56,15 +68,25 @@ export default {
 		return {
 			username: sessionStorage.getItem('authorized'),
 			dialogVisible: false,
-			isCollapse: false
+			isCollapse: false,
+			authorization: sessionStorage.authorization
 		}
 	},
 	methods: {
-		toDataList: function() {
-			this.$router.push('/home/datalist');
+		toLatestData: function() {
+			this.$router.push('/home/realtime');
 		},
 		toDataPanel: function() {
 			this.$router.push('/home');
+		},
+		toDeviceManage: function() {
+			this.$router.push('/home/deviceManage');
+		},
+		toUserManage: function() {
+			this.$router.push('/home/userManage');
+		},
+		toAddMonitorData: function() {
+			this.$router.push('/home/addMonitorData');
 		},
 		changeMenuTitle: function () {
 			if (this.isCollapse) {

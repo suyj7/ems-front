@@ -96,6 +96,7 @@ export default {
 						} else if (response.data.status === 1) {
 							//登录成功
 							sessionStorage.setItem('authorized', this.form.username);
+							sessionStorage.setItem('authorization', response.data.authorization);
 							this.$router.push('/home');
 							
 						} else {

@@ -19,7 +19,7 @@
 				for (var i = 0; i < devices.length; i ++) {
 					res.push({
 						name: devices[i].address,
-						value: [devices[i].longitude, devices[i].latitude]
+						value: [devices[i].longitude, devices[i].latitude, devices[i].device_number]
 					});
 				}
 				
@@ -184,13 +184,19 @@
 		var myChart = this.$echarts.init(document.getElementById('main'));
 		myChart.setOption(option);
 		myChart.on('click', (params) => {
-			this.$router.push('/home/city/' + params.data.name);
+			console.log(params);
+			this.$router.push({
+				path: '/home/realtime/' + params.data.name,
+				query: {
+					deviceNumber: params.data.value[2]
+				}
+			});
 		});
 		document.querySelector('#menu_toggle_icon').onclick = () => myChart.resize();
 		document.querySelector('body').onresize = () => myChart.resize();
 		
 		axios.post('http://localhost:8080/EMS_TP5/public/index.php/api/Index/getDevice', {
-			user: "admin"
+			user: sessionStorage.getItem('authorized')
 		}).then(response => {
 			devices = response.data;
 			

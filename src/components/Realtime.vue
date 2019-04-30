@@ -3,17 +3,18 @@
 </template>
 
 <script>
-
+	import axios from 'axios';
+	
 	export default {
-		data () {
-			return {
-				name: ''
-			}
-		},
 		mounted () {
 			//查看历史数据
 			function checkHistory () {
-				this.$router.push('/home/history');
+				this.$router.push({
+					path: "/home/history/" + this.$route.params.address,
+					query: {
+						deviceNumber: this.$route.query.deviceNumber
+					}
+				});
 			}
 			var checkHistoryInChart = checkHistory.bind(this);
 			
@@ -69,16 +70,7 @@
 				},
 				"title": [{
 					"left": "center",
-					"text": this.$route.params.name + "环境监测子弹图"
-				}, {
-					"text": "数据来源：中国环境监测总站",
-					"borderWidth": 0,
-					"textStyle": {
-						"fontSize": 10,
-						"fontWeight": "normal"
-					},
-					"x": 5,
-					"y2": 0
+					"text": this.$route.params.address + "环境监测子弹图"
 				}, {
 					"text": "更新时间：20190205",
 					"borderWidth": 0,
@@ -90,7 +82,7 @@
 					"y2": 18,
 					"show": true
 				}, {
-					"text": "©环境监测系统",
+					"text": "基于云服务的环境检测系统",
 					"borderColor": "#999",
 					"borderWidth": 0,
 					"textStyle": {
@@ -101,7 +93,7 @@
 					"y2": 0
 				}],
 				"yAxis": {
-					"data": ["温度", "湿度", "甲醛", "光照", "PM2.5", "PM10"],
+					"data": ["温度", "湿度", "甲醛", "光照", "PM2.5"],
 					"splitLine": {
 						"show": false
 					},
@@ -127,13 +119,13 @@
 				"series": [{
 					"type": "bar",
 					"name": "目标值",
-					"data": [100, 100, 100, 100, 100, 100],
+					"data": [100, 100, 100, 100, 100],
 					"barWidth": 30,
 					"z": 9
 				}, {
 					"type": "custom",
 					"name": "实际值",
-					"data": [88, 83, 94, 76, 62, 45],
+					"data": [44,44,44,44,44],
 					"z": 10,
 					renderItem: (_, api) => {
 						const [x, y] = api.coord([api.value(0), api.value(1)]);
@@ -154,14 +146,14 @@
 							}]
 						};
 					},
-				}, {
+				},{
 					"type": "bar",
 					"barWidth": 50,
 					"barGap": "-130%",
 					"stack": "指标范围",
 					"silent": true,
 					"name": "低于较差区间",
-					"data": [30, 35, 40, 35, 35, 20],
+					"data": [30, 35, 40, 35, 35],
 					"itemStyle": {
 						"color": "#d3d3d3"
 					},
@@ -179,7 +171,7 @@
 					"stack": "指标范围",
 					"silent": true,
 					"name": "较差区间",
-					"data": [20, 20, 15, 15, 13, 20],
+					"data": [20, 20, 15, 15, 13],
 					"itemStyle": {
 						"color": "#FFA39E"
 					},
@@ -197,7 +189,7 @@
 					"stack": "指标范围",
 					"silent": true,
 					"name": "中间区间",
-					"data": [20, 20, 15, 22, 13, 20],
+					"data": [20, 20, 15, 22, 13],
 					"itemStyle": {
 						"color": "#FFD591"
 					},
@@ -215,7 +207,7 @@
 					"stack": "指标范围",
 					"silent": true,
 					"name": "良好区间",
-					"data": [20, 20, 20, 18, 13, 20],
+					"data": [20, 20, 20, 18, 13],
 					"itemStyle": {
 						"color": "#91D5FF"
 					},
@@ -233,7 +225,7 @@
 					"stack": "指标范围",
 					"silent": true,
 					"name": "优秀区间",
-					"data": [10, 5, 10, 10, 26, 20],
+					"data": [10, 5, 10, 10, 26],
 					"itemStyle": {
 						"color": "#A7E8B4"
 					},
@@ -249,6 +241,23 @@
 			chart.setOption(option);
 			document.querySelector('#menu_toggle_icon').onclick = () => chart.resize();
 			document.querySelector('body').onresize = () => chart.resize();
+			
+			axios.post("http://localhost:8080/EMS_TP5/public/index.php/api/Index/getRealtimeData", {
+				deviceNumber: this.$route.query.deviceNumber
+			}).then(response => {
+				console.log(response.data);
+				var realtimeData = response.data[0];
+				var data = [realtimeData.temperature, realtimeData.humidity, realtimeData.formaldehyde, realtimeData.light, realtimeData.pm2_5, realtimeData.PM10];
+				console.log(data);
+				chart.setOption({
+					series: [{
+						name: '实际值',
+						data: data
+					}]
+				});
+			}).catch(error => {
+				console.log(error);
+			});
 		}
 	}
 </script>
