@@ -52,23 +52,30 @@
 				this.$router.push('/home/addDevice');
 			},
 			handleDelete: function (row) {
-				axios.post('http://localhost:8080/EMS_TP5/public/index.php/api/Index/deleteDevice', {
-					device_number: row.device_number
-				}).then(response => {
-					if (response.data == 1) {
-						this.$message.success('删除操作成功');
-						//重新获取数据
-						axios.get('http://localhost:8080/EMS_TP5/public/index.php/api/Index/getAllDevice').then(response => {
-							this.tabledata = response.data;
-						}).catch(error => {
-							console.log(error);
-						})
-					}else {
-						this.$message.error('删除操作失败');
-					}
-				}).catch(error => {
-					console.log(error);
-				});
+				this.$confirm('是否确定删除设备[ '+row.device_number+' ]？', '提示', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消',
+					type: 'warning'
+				}).then(() => {
+					axios.post('http://localhost:8080/EMS_TP5/public/index.php/api/Index/deleteDevice', {
+						device_number: row.device_number
+					}).then(response => {
+						if (response.data == 1) {
+							this.$message.success('删除操作成功');
+							//重新获取数据
+							axios.get('http://localhost:8080/EMS_TP5/public/index.php/api/Index/getAllDevice').then(response => {
+								this.tabledata = response.data;
+							}).catch(error => {
+								console.log(error);
+							})
+						}else {
+							this.$message.error('删除操作失败');
+						}
+					}).catch(error => {
+						console.log(error);
+					});
+				}).catch();
+				
 			}
 		},
 		created () {

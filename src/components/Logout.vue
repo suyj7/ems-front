@@ -30,6 +30,7 @@
 			logout: function () {
 				this.dialogVisible = false
 				sessionStorage.removeItem('authorized');
+				sessionStorage.removeItem('authorization');
 				this.$cookies.remove('PHPSESSID');
 				this.$router.push('/login');
 				axios.get('http://localhost:8080/EMS_TP5/public/index.php/api/Index/logout')

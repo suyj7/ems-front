@@ -7,38 +7,30 @@
 					style="height: 100%" 
 					background-color="#263238"
 					text-color="#C5CBCF"
-					default-active="1"
+					:default-active="defaultActive"
 					:collapse="isCollapse"
 					:collapse-transition="false"
 				>
 					<div class="menu-header">基于云服务的环境检测系统</div>
-					<el-menu-item @click="toDataPanel" index="1">
+					<el-menu-item @click="toDeviceLocation" index="">
 						<i class="el-icon-location"></i>
 						<span slot="title">设备分布</span>
 					</el-menu-item>
-					<el-menu-item @click="toLatestData" index="2">
+					<el-menu-item @click="toLatestData" index="realtime">
 						<i class="el-icon-document"></i>
 						<span slot="title">最新数据</span>
 					</el-menu-item>
-					<el-menu-item index="3">
+					<el-menu-item @click="toHistoryData" index="history">
 						<i class="el-icon-download"></i>
 						<span slot="title">历史数据</span>
 					</el-menu-item>
-					<el-menu-item index="4" v-if="this.authorization == 'user'">
-						<i class="el-icon-setting"></i>
-						<span slot="title">用户中心</span>
-					</el-menu-item>
-					<el-menu-item v-if="this.authorization == 'admin'" @click="toUserManage">
+					<el-menu-item v-if="this.authorization == 'admin'" @click="toUserManage" index="userManage">
 						<i class="el-icon-setting"></i>
 						<span slot="title">用户管理</span>
 					</el-menu-item>
-					<el-menu-item v-if="this.authorization == 'admin'" @click="toDeviceManage">
+					<el-menu-item v-if="this.authorization == 'admin'" @click="toDeviceManage" index="deviceManage">
 						<i class="el-icon-setting"></i>
 						<span slot="title">设备管理</span>
-					</el-menu-item>
-					<el-menu-item v-if="this.authorization == 'admin'" @click="toAddMonitorData">
-						<i class="el-icon-setting"></i>
-						<span slot="title">模拟数据提交</span>
 					</el-menu-item>
 				</el-menu>
 			</el-aside>
@@ -72,21 +64,26 @@ export default {
 			authorization: sessionStorage.authorization
 		}
 	},
+	computed: {
+		defaultActive() {
+			return this.$route.path.split('/')[2];
+		}
+	},
 	methods: {
-		toLatestData: function() {
-			this.$router.push('/home/realtime');
+		toDeviceLocation: function () {
+			this.$router.push('/home/');
 		},
-		toDataPanel: function() {
-			this.$router.push('/home');
+		toLatestData: function() {
+			this.$router.push(sessionStorage.getItem('latestDataUrl'));
+		},
+		toHistoryData: function() {
+			this.$router.push(sessionStorage.getItem('historyDataUrl'));
 		},
 		toDeviceManage: function() {
 			this.$router.push('/home/deviceManage');
 		},
 		toUserManage: function() {
 			this.$router.push('/home/userManage');
-		},
-		toAddMonitorData: function() {
-			this.$router.push('/home/addMonitorData');
 		},
 		changeMenuTitle: function () {
 			if (this.isCollapse) {

@@ -7,17 +7,6 @@
 	
 	export default {
 		mounted () {
-			//查看历史数据
-			function checkHistory () {
-				this.$router.push({
-					path: "/home/history/" + this.$route.params.address,
-					query: {
-						deviceNumber: this.$route.query.deviceNumber
-					}
-				});
-			}
-			var checkHistoryInChart = checkHistory.bind(this);
-			
 			var chart = this.$echarts.init(document.getElementById('chart'));
 			var option = {
 				backgroundColor:'#fff',
@@ -31,7 +20,7 @@
 							show: true,
 							title: "历史数据",
 							icon: "image://" + require('../assets/历史数据.png'),
-							onclick: checkHistoryInChart
+							onclick: () => {this.$router.push(sessionStorage.getItem('historyDataUrl'));}
 						}
 					}
 				},
@@ -245,10 +234,8 @@
 			axios.post("http://localhost:8080/EMS_TP5/public/index.php/api/Index/getRealtimeData", {
 				deviceNumber: this.$route.query.deviceNumber
 			}).then(response => {
-				console.log(response.data);
 				var realtimeData = response.data[0];
 				var data = [realtimeData.temperature, realtimeData.humidity, realtimeData.formaldehyde, realtimeData.light, realtimeData.pm2_5, realtimeData.PM10];
-				console.log(data);
 				chart.setOption({
 					series: [{
 						name: '实际值',

@@ -31,7 +31,7 @@
 			// backgroundColor: '#404a59',
 			title: {
 				text: '基于云服务的环境检测系统',
-				subtext: '中国环境监测总站',
+				subtext: '设备分布图',
 				sublink: 'http://www.cnemc.cn/',
 				left: 'center',
 				textStyle: {
@@ -183,22 +183,27 @@
 			
 		var myChart = this.$echarts.init(document.getElementById('main'));
 		myChart.setOption(option);
+		//点击事件处理函数
 		myChart.on('click', (params) => {
-			console.log(params);
-			this.$router.push({
-				path: '/home/realtime/' + params.data.name,
-				query: {
-					deviceNumber: params.data.value[2]
-				}
-			});
+			//修改url
+			sessionStorage.setItem('latestDataUrl', '/home/realtime/'+params.data.name+'?deviceNumber='+params.data.value[2]);
+			sessionStorage.setItem('historyDataUrl', '/home/history/'+params.data.name+'?deviceNumber='+params.data.value[2]);
+			
+			this.$router.push(sessionStorage.getItem('latestDataUrl'));
 		});
 		document.querySelector('#menu_toggle_icon').onclick = () => myChart.resize();
 		document.querySelector('body').onresize = () => myChart.resize();
+		//设置获取设备信息的Url
+		var url = 'http://localhost:8080/EMS_TP5/public/index.php/api/Index/';
+		url = sessionStorage.getItem('authorization') === 'admin' ? url + 'getAllDevice' : url + 'getDevice';
 		
-		axios.post('http://localhost:8080/EMS_TP5/public/index.php/api/Index/getDevice', {
+		axios.post(url, {
 			user: sessionStorage.getItem('authorized')
 		}).then(response => {
 			devices = response.data;
+			//设置默认url
+			sessionStorage.setItem('latestDataUrl', '/home/realtime/'+devices[0].address+'?deviceNumber='+devices[0].device_number);
+			sessionStorage.setItem('historyDataUrl', '/home/history/'+devices[0].address+'?deviceNumber='+devices[0].device_number);
 			
 			myChart.setOption({
 				series : [

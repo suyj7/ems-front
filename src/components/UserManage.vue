@@ -40,29 +40,34 @@
 				this.$router.push('/home/addUser');
 			},
 			handleDelete: function (row) {
-				axios.post('http://localhost:8080/EMS_TP5/public/index.php/api/Index/deleteUser', {
-					user_name: row.user_name
-				}).then(response => {
-					if (response.data == 1) {
-						this.$message.success('删除操作成功');
-						//重新获取数据
-						axios.get('http://localhost:8080/EMS_TP5/public/index.php/api/Index/getAllUser').then(response => {
-							this.tabledata = response.data;
-						}).catch(error => {
-							console.log(error);
-						})
-					}else {
-						this.$message.error('删除操作失败');
-					}
-				}).catch(error => {
-					console.log(error);
-				});
+				this.$confirm('是否确定删除该用户[ '+row.user_name+' ]', '提示', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消',
+					type: 'warning'
+				}).then(() => {
+					axios.post('http://localhost:8080/EMS_TP5/public/index.php/api/Index/deleteUser', {
+						user_name: row.user_name
+					}).then(response => {
+						if (response.data == 1) {
+							this.$message.success('删除操作成功');
+							//重新获取数据
+							axios.get('http://localhost:8080/EMS_TP5/public/index.php/api/Index/getAllUser').then(response => {
+								this.tabledata = response.data;
+							}).catch(error => {
+								console.log(error);
+							})
+						}else {
+							this.$message.error('删除操作失败');
+						}
+					}).catch(error => {
+						console.log(error);
+					});
+				}).catch();
 			}
 		},
 		created () {
 			axios.get('http://localhost:8080/EMS_TP5/public/index.php/api/Index/getAllUser').then(response => {
 				this.tabledata = response.data;
-				console.log(this.tabledata);
 			}).catch(error => {
 				console.log(error);
 			})

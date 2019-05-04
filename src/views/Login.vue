@@ -97,6 +97,8 @@ export default {
 							//登录成功
 							sessionStorage.setItem('authorized', this.form.username);
 							sessionStorage.setItem('authorization', response.data.authorization);
+							sessionStorage.setItem('latestDataUrl', '');
+							sessionStorage.setItem('historyDataUrl', '');
 							this.$router.push('/home');
 							
 						} else {

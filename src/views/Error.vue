@@ -13,6 +13,9 @@
 			}
 		},
 		mounted() {
+			sessionStorage.removeItem('authorized');
+			sessionStorage.removeItem('authorization');
+			this.$cookies.remove('PHPSESSID');
 			setInterval(() => {
 				this.count --;
 				if (this.count == 0) {
